@@ -1,25 +1,29 @@
-import clsx from "clsx";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { NavbarProps } from "./Navbar.props";
 import { MdHome, MdOutlineFavorite } from "react-icons/md";
 import { SlArrowDown } from "react-icons/sl";
-import React from "react";
 
 export const Navbar = ({}: NavbarProps) => {
+  const router = useRouter();
+  const [showDropDown, setShowDropDown] = useState(false);
+
   const handleOnClickHome = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("signOut");
+    router.push("/");
   };
 
   const handleOnClickMyList = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("signOut");
+    router.push("/my-list");
   };
 
   const handleShowDropDown = (e: React.MouseEvent) => {
     e.preventDefault();
+    setShowDropDown((prev) => !prev);
   };
 
   const handleSignout = (e: React.MouseEvent) => {
@@ -43,26 +47,27 @@ export const Navbar = ({}: NavbarProps) => {
       </div>
       <div className={styles.rightContent}>
         <ul className={styles.navItems}>
-          <li className={styles.navItem}>
+          <li className={styles.navItem} onClick={handleOnClickHome}>
             <MdHome />
             <p>Home</p>
           </li>
-          <li className={styles.navItem}>
+          <li className={styles.navItem} onClick={handleOnClickMyList}>
             <MdOutlineFavorite />
             <p>My List</p>
           </li>
         </ul>
         <div className={styles.userWrapper}>
-          <button className={styles.userBtn}>
+          <button className={styles.userBtn} onClick={handleShowDropDown}>
             <p>Username</p>
             <SlArrowDown className={styles.arrowDown} />
           </button>
-          <div className={styles.navDropdown}>
-            <a className={styles.linkName} onClick={handleSignout}>
-              Sign out
-            </a>
-            <div className={styles.lineWrapper}></div>
-          </div>
+          {showDropDown && (
+            <div className={styles.navDropdown}>
+              <a className={styles.linkName} onClick={handleSignout}>
+                Sign out
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </nav>
