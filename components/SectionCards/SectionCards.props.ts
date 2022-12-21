@@ -1,6 +1,7 @@
-type Video = {
-  id: number;
+export type Video = {
+  id: string;
   imgUrl: string;
+  properties: Record<string, unknown>;
 };
 
 export interface SectionCardsProps {
