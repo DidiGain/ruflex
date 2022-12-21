@@ -39,8 +39,8 @@ export const Navbar = ({}: NavbarProps) => {
             className={styles.logoIcon}
             src="/static/icons/cinema-icon.svg"
             alt="Ruflex logo"
-            width="60"
-            height="60"
+            width="50"
+            height="50"
           />
         </Link>
         <h1 className={styles.logoTitle}>Puffix</h1>
