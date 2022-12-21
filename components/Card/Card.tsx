@@ -8,7 +8,7 @@ import { CardProps } from "./Card.props";
 export const Card = ({ id, imgUrl, size, shouldScale = true }: CardProps) => {
   const [imageSrc, setImageSrc] = useState(imgUrl);
 
-  const classMap = {
+  const classMap: Record<string, string> = {
     large: styles.lgItem,
     medium: styles.mdItem,
     small: styles.smItem,
