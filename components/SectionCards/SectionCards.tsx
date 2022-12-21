@@ -6,7 +6,7 @@ import { SectionCardsProps } from "./SectionCards.props";
 
 export const SectionCards = ({
   title,
-  videos,
+  videos = [],
   size,
   shouldScale,
   shouldWrap = false,
@@ -15,7 +15,7 @@ export const SectionCards = ({
     <section className={styles.sectionContainer}>
       <h2 className={styles.sectionTitle}>{title}</h2>
       <div className={clsx(styles.cardWrapper, shouldWrap && styles.cardWrap)}>
-        {videos.map((video, idx) => (
+        {videos?.map((video, idx) => (
           <Link href={`/video/${video.id}`} key={video.id}>
             <Card
               id={idx}
