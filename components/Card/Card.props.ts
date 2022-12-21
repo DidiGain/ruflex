@@ -1,6 +1,6 @@
 export interface CardProps {
   id: number;
   imgUrl: string;
-  size: "large" | "medium" | "small";
+  size: string;
   shouldScale: boolean;
 }
