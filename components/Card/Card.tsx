@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./Card.module.css";
@@ -19,9 +20,11 @@ export const Card = ({ id, imgUrl, size, shouldScale = true }: CardProps) => {
     );
   };
 
+  const scale = id === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
+
   return (
     <div className={styles.cardContainer}>
-      <div className={classMap[size]}>
+      <motion.div className={classMap[size]} whileHover={{ ...scale }}>
         <Image
           src={imageSrc}
           alt="card image"
@@ -29,7 +32,7 @@ export const Card = ({ id, imgUrl, size, shouldScale = true }: CardProps) => {
           fill
           onError={handleOnError}
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
