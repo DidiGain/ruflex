@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Login.module.css";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { magic } from "../lib/magic-client";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,24 @@ const Login = () => {
 
   const handleLoginWithEmail = async (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (email) {
+      try {
+        setIsLoading(true);
+
+        const didToken = await magic?.auth.loginWithMagicLink({ email });
+        if (didToken) {
+          setIsLoading(false);
+          router.push("/");
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.error("Something went wrong while loggin in", error);
+      }
+    } else {
+      setIsLoading(false);
+      setUserMsg("Enter a valid email address");
+    }
   };
 
   return (
