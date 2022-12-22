@@ -12,6 +12,18 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const handleComplete = () => setIsLoading(false);
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
   const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setUserMsg("");
@@ -27,7 +39,6 @@ const Login = () => {
 
         const didToken = await magic?.auth.loginWithMagicLink({ email });
         if (didToken) {
-          setIsLoading(false);
           router.push("/");
         }
       } catch (error) {
