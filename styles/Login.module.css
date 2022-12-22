@@ -1,0 +1,117 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--black);
+  background-image: linear-gradient(
+      rgb(0 0 0 / 60%),
+      rgb(0 0 0 / 50%),
+      rgb(0 0 0 / 60%)
+    ),
+    url(/static/signin-bg.jpeg);
+}
+
+.logoLink {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  margin-bottom: 2em;
+  gap: 10px;
+  filter: invert(17%) sepia(75%) saturate(7315%) hue-rotate(358deg)
+    brightness(93%) contrast(113%);
+}
+
+.logoTitle {
+  font-size: 3rem;
+  line-height: 1.5rem;
+  color: var(--red-primary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2em 0;
+}
+
+.headerWrapper {
+  display: flex;
+  padding: 0 1em;
+}
+
+.main {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  height: 33%;
+  padding: 3em 4em;
+  background-color: var(--black20);
+  border-radius: var(--border-radius);
+}
+
+.signinHeader {
+  margin-bottom: 1em;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white10);
+}
+
+.emailInput {
+  width: 100%;
+  min-width: 240px;
+  height: 2.5em;
+  padding: 0.5em;
+  font-size: 1.2rem;
+  color: var(--black40);
+  background-color: var(--white10);
+  border: none;
+  outline: orange;
+}
+
+.userMsg {
+  margin-top: 0.5em;
+  color: var(--white20);
+}
+
+.loginBtn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.5em 3em;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--white10);
+  background-color: var(--red10);
+  border-radius: var(--border-radius);
+}
+
+.emailInput:focus-visible,
+.loginBtn:focus-visible {
+  box-shadow: 0 0 2px 2px orange;
+}
+
+@media (min-width: 768px) {
+  .headerWrapper {
+    padding: 0 4em;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .logoLink {
+    margin-bottom: 0px;
+  }
+
+  .mainWrapper {
+    margin-top: 2em;
+  }
+}
