@@ -81,8 +81,8 @@
   justify-content: center;
   align-items: center;
   top: 35px;
-  left: 35px;
-  padding: 0.4em;
+  right: 0;
+  padding: 0.7em;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: var(--border-radius);
   color: var(--white);
