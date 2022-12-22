@@ -2,10 +2,50 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Banner } from "../components/Banner/Banner";
 import { Navbar } from "../components/Navbar/Navbar";
-import { Card } from "../components/Card/Card";
 import { SectionCards } from "../components/SectionCards/SectionCards";
+import {
+  fetchCommonVideos,
+  fetchPopularVideos,
+  fetchVideos,
+} from "../lib/videos";
+import { Video } from "../components/SectionCards/SectionCards.props";
 
-export default function Home() {
+interface HomeProps {
+  disneyVideos: Video[];
+  watchItAgainVideos: Video[];
+  travelVideos: Video[];
+  productivityVideos: Video[];
+  popularVideos: Video[];
+}
+
+// export async function getServerSideProps() {
+//   const disneyVideos = await fetchVideos("disney trailer");
+//   const watchItAgainVideos = await fetchVideos("disney trailer");
+//   const travelVideos = await fetchVideos("travel");
+//   const productivityVideos = await fetchVideos("productivity");
+//   const popularVideos = await fetchPopularVideos();
+
+//   return {
+//     props: {
+//       disneyVideos,
+//       watchItAgainVideos,
+//       travelVideos,
+//       productivityVideos,
+//       popularVideos,
+//     },
+//   };
+// }
+
+export default function Home(
+  {
+    // disneyVideos,
+    // watchItAgainVideos,
+    // travelVideos,
+    // productivityVideos,
+    // popularVideos,
+  }
+) {
+  // }: HomeProps) {
   return (
     <>
       <Head>
@@ -28,12 +68,14 @@ export default function Home() {
           <SectionCards
             title="Disney"
             size="large"
+            // videos={disneyVideos}
             videos={[]}
             shouldWrap={false}
             shouldScale={false}
           />
           <SectionCards
             title="Watch it again"
+            // videos={watchItAgainVideos}
             videos={[]}
             size="small"
             shouldWrap={false}
@@ -41,6 +83,7 @@ export default function Home() {
           />
           <SectionCards
             title="Travel"
+            // videos={travelVideos}
             videos={[]}
             size="small"
             shouldWrap={false}
@@ -48,6 +91,7 @@ export default function Home() {
           />
           <SectionCards
             title="Productivity"
+            // videos={productivityVideos}
             videos={[]}
             size="medium"
             shouldWrap={false}
@@ -55,6 +99,7 @@ export default function Home() {
           />
           <SectionCards
             title="Popular"
+            // videos={popularVideos}
             videos={[]}
             size="small"
             shouldWrap={false}
