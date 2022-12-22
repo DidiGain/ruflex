@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,10 +6,29 @@ import styles from "./Navbar.module.css";
 import { NavbarProps } from "./Navbar.props";
 import { MdHome, MdOutlineFavorite } from "react-icons/md";
 import { SlArrowDown } from "react-icons/sl";
+import { magic } from "../../lib/magic-client";
 
 export const Navbar = ({}: NavbarProps) => {
-  const router = useRouter();
+  const [username, setUsername] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUserEmail = async () => {
+      try {
+        const user = await magic?.user.getMetadata();
+
+        if (user) {
+          setUsername(user.email as string);
+          console.log(username);
+        }
+      } catch (error) {
+        console.error("Error retrieving email", error);
+      }
+    };
+
+    getUserEmail();
+  }, [username]);
 
   const handleOnClickHome = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,9 +45,16 @@ export const Navbar = ({}: NavbarProps) => {
     setShowDropDown((prev) => !prev);
   };
 
-  const handleSignout = (e: React.MouseEvent) => {
+  const handleSignout = async (e: React.MouseEvent) => {
     e.preventDefault();
     console.log("signOut");
+    try {
+      await magic?.user.logout();
+      router.push("/login");
+    } catch (error) {
+      console.error("Something went wrong signing out", error);
+      router.push("/login");
+    }
   };
 
   return (
@@ -58,7 +84,7 @@ export const Navbar = ({}: NavbarProps) => {
         </ul>
         <div className={styles.userWrapper}>
           <button className={styles.userBtn} onClick={handleShowDropDown}>
-            <p>Username</p>
+            <p>{username}</p>
             <SlArrowDown className={styles.arrowDown} />
           </button>
           {showDropDown && (
