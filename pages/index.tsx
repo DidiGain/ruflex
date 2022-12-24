@@ -49,7 +49,7 @@ export default function Home(
   return (
     <>
       <Head>
-        <title>Ruflix</title>
+        <title>Puffix</title>
         <meta
           name="description"
           content="Ruflex site for cinema and youtube channels"
