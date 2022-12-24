@@ -59,7 +59,7 @@ export default function Home(
       <main className={styles.main}>
         <Navbar />
         <Banner
-          itemId={""}
+          itemId="4zH5iYM4wJo"
           title="Clifford - the red dog"
           subtitle="an extremely cute dog"
           imgUrl="/static/clifford.webp"
