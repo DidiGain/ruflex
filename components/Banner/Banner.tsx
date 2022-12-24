@@ -1,11 +1,14 @@
 import clsx from "clsx";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import styles from "./Banner.module.css";
 import { BannerProps } from "./Banner.props";
 
 export const Banner = ({ itemId, title, subtitle, imgUrl }: BannerProps) => {
+  const router = useRouter();
+
   const handleBtnClick = () => {
-    console.log("clicked");
+    router.push(`/video/${itemId}`);
   };
 
   return (
