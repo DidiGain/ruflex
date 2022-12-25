@@ -3,7 +3,9 @@
   left: 0;
   right: 0;
   margin: 0 auto;
+  padding: 0 0 2em;
   width: 800px;
+  height: fit-content;
   bottom: 40px;
   background-color: var(--black40);
   top: 10%;
@@ -54,27 +56,23 @@
   overflow-y: scroll;
 }
 
-.publishTime {
+.videoTitle {
+  padding-top: 2em;
+  text-align: center;
   font-size: 1.125rem;
   line-height: 1.75rem;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  color: var(--green10);
+  color: orange;
 }
 
-.text {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: var(--white10);
-}
-
-.description {
+.videoDescription {
   margin-bottom: 0.5em;
   margin-top: 0.75em;
+  text-align: justify;
+  line-height: 1.5;
 }
 
 .col2 {
-  color: var(--white10);
+  color: var(--white20);
   line-height: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -88,11 +86,11 @@
 }
 
 .subTextWrapper {
-  margin-top: 1.5em;
+  margin-bottom: 1.5em;
 }
 
-.textColor {
-  color: var(--gray10);
+.subTextColor {
+  color: var(--green10);
 }
 
 .channelTitle {
