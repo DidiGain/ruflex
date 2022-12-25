@@ -3,15 +3,53 @@ import { Navbar } from "../../components/Navbar/Navbar";
 import styles from "../../styles/Video.module.css";
 import Modal from "react-modal";
 import clsx from "clsx";
+import { GetStaticProps, PreviewData } from "next";
+import { ParsedUrlQuery } from "querystring";
+import { fetchVideoById } from "../../lib/videos";
+import { formatBigNumber, formatDate } from "../../helpers/format";
+import { Video } from "../../components/SectionCards/SectionCards.props";
 
 Modal.setAppElement("#__next");
 
-const Video = () => {
+export interface VideoObj {
+  video: Video;
+}
+
+export const getStaticProps: GetStaticProps<
+  { [key: string]: any },
+  ParsedUrlQuery,
+  PreviewData
+> = async (context) => {
+  const videoId = context?.params?.videoId as string;
+  const videoArray = await fetchVideoById(videoId);
+
+  return {
+    props: { video: videoArray.length > 0 ? videoArray[0] : {} },
+    revalidate: 10,
+  };
+};
+
+export const getStaticPaths = async () => {
+  const listOfVideos = ["mYfJxlgR2jw", "4zH5iYM4wJo", "KCPEHsAViiQ"];
+  const paths = listOfVideos.map((videoId) => ({ params: { videoId } }));
+
+  return { paths, fallback: "blocking" };
+};
+
+const Video = ({ video }: VideoObj) => {
   const router = useRouter();
   const videoId = router.query.videoId;
 
+  const {
+    title,
+    publishedAt,
+    description,
+    channelTitle,
+    statistics: { viewCount } = { viewCount: 0 },
+  } = video;
+
   return (
-    <div className={styles.videoContainer}>
+    <>
       <Navbar />
       <Modal
         className={styles.videoModal}
@@ -42,24 +80,28 @@ const Video = () => {
         <div className={styles.modalBody}>
           <div className={styles.modalBodyContent}>
             <div className={styles.col1}>
-              <p className={styles.publishTime}>{}</p>
-              <p className={styles.title}>{}</p>
-              <p className={styles.description}>{}</p>
+              <hr />
+              <p className={styles.videoTitle}>{title}</p>
+              <p className={styles.videoDescription}>{description}</p>
             </div>
             <div className={styles.col2}>
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>Cast: </span>
-                <span className={styles.channelTitle}>{}</span>
+                <span className={styles.subTextColor}>Cast: </span>
+                <span className={styles.channelTitle}>{channelTitle}</span>
               </p>
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                <span className={styles.textColor}>View Count: </span>
-                <span className={styles.channelTitle}>{}</span>
+                <span className={styles.subTextColor}>View Count: </span>
+                <span className={styles.channelTitle}>{viewCount}</span>
+              </p>
+              <p className={clsx(styles.subText, styles.subTextWrapper)}>
+                <span className={styles.subTextColor}>Published at: </span>
+                <span className={styles.channelTitle}>{publishedAt}</span>
               </p>
             </div>
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 
