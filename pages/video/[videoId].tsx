@@ -91,11 +91,15 @@ const Video = ({ video }: VideoObj) => {
               </p>
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTextColor}>View Count: </span>
-                <span className={styles.channelTitle}>{viewCount}</span>
+                <span className={styles.channelTitle}>
+                  {formatBigNumber(viewCount)}
+                </span>
               </p>
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTextColor}>Published at: </span>
-                <span className={styles.channelTitle}>{publishedAt}</span>
+                <span className={styles.channelTitle}>
+                  {formatDate(publishedAt)}
+                </span>
               </p>
             </div>
           </div>
