@@ -1,15 +1,20 @@
 import videoTestData from "../data/videos.json";
 
+const YT_API_KEY = process.env.YT_API_KEY;
+const BASE_URL = "youtube.googleapis.com/youtube/v3";
+
+const fetchVideos = async (url: string) => {
+  const response = await fetch(
+    `https://${BASE_URL}/${url}&maxResults=25&key=${YT_API_KEY}`
+  );
+
+  return await response.json();
+};
+
 export const fetchCommonVideos = async (url: string) => {
-  const YT_API_KEY = process.env.YT_API_KEY;
-  const BASE_URL = "youtube.googleapis.com/youtube/v3";
-
   try {
-    const response = await fetch(
-      `https://${BASE_URL}/${url}&maxResults=25&key=${YT_API_KEY}`
-    );
-
-    const data = await response.json();
+    const isDev = process.env.DEVELOPMENT;
+    const data = isDev ? videoTestData : await fetchVideos(url);
 
     if (data?.error) {
       console.error("Youtube API error", data.error);
@@ -34,7 +39,7 @@ export const fetchCommonVideos = async (url: string) => {
   }
 };
 
-export const fetchVideos = (searchQuery: string) => {
+export const fetchVideosBySearchQuery = (searchQuery: string) => {
   const URL = `search?part=snippet&q=${searchQuery}&type=video`;
   return fetchCommonVideos(URL);
 };

@@ -6,7 +6,7 @@ import { SectionCards } from "../components/SectionCards/SectionCards";
 import {
   fetchCommonVideos,
   fetchPopularVideos,
-  fetchVideos,
+  fetchVideosBySearchQuery,
 } from "../lib/videos";
 import { Video } from "../components/SectionCards/SectionCards.props";
 
@@ -18,34 +18,31 @@ interface HomeProps {
   popularVideos: Video[];
 }
 
-// export async function getServerSideProps() {
-//   const disneyVideos = await fetchVideos("disney trailer");
-//   const watchItAgainVideos = await fetchVideos("disney trailer");
-//   const travelVideos = await fetchVideos("travel");
-//   const productivityVideos = await fetchVideos("productivity");
-//   const popularVideos = await fetchPopularVideos();
+export async function getServerSideProps() {
+  const disneyVideos = fetchVideosBySearchQuery("disney trailer");
+  const watchItAgainVideos = fetchVideosBySearchQuery("disney trailer");
+  const travelVideos = fetchVideosBySearchQuery("travel");
+  const productivityVideos = fetchVideosBySearchQuery("productivity");
+  const popularVideos = fetchPopularVideos();
 
-//   return {
-//     props: {
-//       disneyVideos,
-//       watchItAgainVideos,
-//       travelVideos,
-//       productivityVideos,
-//       popularVideos,
-//     },
-//   };
-// }
+  return {
+    props: {
+      disneyVideos,
+      watchItAgainVideos,
+      travelVideos,
+      productivityVideos,
+      popularVideos,
+    },
+  };
+}
 
-export default function Home(
-  {
-    // disneyVideos,
-    // watchItAgainVideos,
-    // travelVideos,
-    // productivityVideos,
-    // popularVideos,
-  }
-) {
-  // }: HomeProps) {
+export default function Home({
+  disneyVideos,
+  watchItAgainVideos,
+  travelVideos,
+  productivityVideos,
+  popularVideos,
+}: HomeProps) {
   return (
     <>
       <Head>
@@ -68,39 +65,34 @@ export default function Home(
           <SectionCards
             title="Disney"
             size="large"
-            // videos={disneyVideos}
-            videos={[]}
+            videos={disneyVideos}
             shouldWrap={false}
             shouldScale={false}
           />
           <SectionCards
             title="Watch it again"
-            // videos={watchItAgainVideos}
-            videos={[]}
+            videos={watchItAgainVideos}
             size="small"
             shouldWrap={false}
             shouldScale={false}
           />
           <SectionCards
             title="Travel"
-            // videos={travelVideos}
-            videos={[]}
+            videos={travelVideos}
             size="small"
             shouldWrap={false}
             shouldScale={false}
           />
           <SectionCards
             title="Productivity"
-            // videos={productivityVideos}
-            videos={[]}
+            videos={productivityVideos}
             size="medium"
             shouldWrap={false}
             shouldScale={false}
           />
           <SectionCards
             title="Popular"
-            // videos={popularVideos}
-            videos={[]}
+            videos={popularVideos}
             size="small"
             shouldWrap={false}
             shouldScale={false}
@@ -109,4 +101,7 @@ export default function Home(
       </main>
     </>
   );
+}
+function fetchVideos(arg0: string) {
+  throw new Error("Function not implemented.");
 }
