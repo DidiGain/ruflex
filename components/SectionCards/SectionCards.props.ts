@@ -1,8 +1,12 @@
-export type Video = {
+export interface Video {
   id: string;
+  title: string;
+  description: string;
   imgUrl: string;
-  properties: Record<string, unknown>;
-};
+  publishedAt: string;
+  channelTitle: string;
+  statistics: { viewCount: number };
+}
 
 export interface SectionCardsProps {
   title: string;
