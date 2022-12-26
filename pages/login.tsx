@@ -5,6 +5,7 @@ import styles from "../styles/Login.module.css";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { magic } from "../lib/magic-client";
+import { RPCError, RPCErrorCode } from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,13 +38,29 @@ const Login = () => {
       try {
         setIsLoading(true);
 
-        const didToken = await magic?.auth.loginWithMagicLink({ email });
+        const didToken = await magic?.auth.loginWithMagicLink({
+          email,
+        });
+
         if (didToken) {
           router.push("/");
         }
       } catch (error) {
         setIsLoading(false);
         console.error("Something went wrong while loggin in", error);
+        if (error instanceof RPCError) {
+          switch (error.code) {
+            case RPCErrorCode.MagicLinkFailedVerification:
+              console.log(error.code);
+            case RPCErrorCode.MagicLinkExpired:
+              console.log(error.code);
+            case RPCErrorCode.MagicLinkRateLimited:
+              console.log(error.code);
+            case RPCErrorCode.UserAlreadyLoggedIn:
+              console.log(error.code);
+              break;
+          }
+        }
       }
     } else {
       setIsLoading(false);
