@@ -13,6 +13,7 @@
     "@magic-sdk/admin": "^1.8.0",
     "@magic-sdk/types": "^10.0.0",
     "@next/font": "13.0.7",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/node": "18.11.17",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
