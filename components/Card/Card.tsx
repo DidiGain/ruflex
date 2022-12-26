@@ -30,7 +30,7 @@ export const Card = ({ id, imgUrl, size, shouldScale = true }: CardProps) => {
           alt="card image"
           className={styles.cardImage}
           fill
-          objectFit="cover"
+          sizes={classMap[size]}
           onError={handleOnError}
         />
       </motion.div>
