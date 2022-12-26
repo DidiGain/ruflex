@@ -19,11 +19,11 @@ interface HomeProps {
 }
 
 export async function getServerSideProps() {
-  const disneyVideos = fetchVideosBySearchQuery("disney trailer");
-  const watchItAgainVideos = fetchVideosBySearchQuery("disney trailer");
-  const travelVideos = fetchVideosBySearchQuery("travel");
-  const productivityVideos = fetchVideosBySearchQuery("productivity");
-  const popularVideos = fetchPopularVideos();
+  const disneyVideos = await fetchVideosBySearchQuery("disney trailer");
+  const watchItAgainVideos = await fetchVideosBySearchQuery("disney trailer");
+  const travelVideos = await fetchVideosBySearchQuery("travel");
+  const productivityVideos = await fetchVideosBySearchQuery("productivity");
+  const popularVideos = await fetchPopularVideos();
 
   return {
     props: {
@@ -101,7 +101,4 @@ export default function Home({
       </main>
     </>
   );
-}
-function fetchVideos(arg0: string) {
-  throw new Error("Function not implemented.");
 }
