@@ -3,5 +3,5 @@ export const formatDate = (date: string) => {
 };
 
 export const formatBigNumber = (num: number) => {
-  return num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
+  return num?.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ");
 };
