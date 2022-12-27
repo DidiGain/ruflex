@@ -5,7 +5,7 @@ import styles from "../styles/Login.module.css";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { magic } from "../lib/magic-client";
-import { RPCError, RPCErrorCode } from "magic-sdk";
+import { RPCError, RPCErrorCode, SDKError } from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -40,24 +40,42 @@ const Login = () => {
 
         const didToken = await magic?.auth.loginWithMagicLink({
           email,
+          showUI: true,
         });
 
         if (didToken) {
-          router.push("/");
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          const loggedInResponse = await response.json();
+
+          if (loggedInResponse.done) {
+            router.push("/");
+          } else {
+            setIsLoading(false);
+            setUserMsg(
+              "Something went wrong while loggin in. Please, try again later."
+            );
+          }
         }
       } catch (error) {
         setIsLoading(false);
-        console.error("Something went wrong while loggin in", error);
+        console.log(`Error while singing in: ${error}`);
         if (error instanceof RPCError) {
           switch (error.code) {
             case RPCErrorCode.MagicLinkFailedVerification:
-              console.log(error.code);
+              console.log(error.code, SDKError);
             case RPCErrorCode.MagicLinkExpired:
-              console.log(error.code);
+              console.log(error.code, SDKError);
             case RPCErrorCode.MagicLinkRateLimited:
-              console.log(error.code);
+              console.log(error.code, SDKError);
             case RPCErrorCode.UserAlreadyLoggedIn:
-              console.log(error.code);
+              console.log(error.code, SDKError);
               break;
           }
         }
