@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { magicAdmin } from "../../lib/magic-server";
 import jwt from "jsonwebtoken";
 import { createNewUser, isNewUser } from "../../lib/db/hasura";
+import { MetadataProps } from "../../types";
+import { setTokenCookie } from "../../lib/cookies";
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -33,7 +35,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
 
       isNewUserQuery &&
         (await createNewUser(token, { issuer, email, publicAddress }));
-
+      setTokenCookie(token, res);
       res.send({ message: "success" });
     } catch (error) {
       console.error("Something went wrong logging in", error);
