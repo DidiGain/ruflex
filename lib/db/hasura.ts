@@ -1,3 +1,5 @@
+import { MetadataProps } from "../../types";
+
 async function fetchHasuraGraphQL(
   operationsDoc: string,
   operationName: string,
@@ -42,10 +44,7 @@ export async function isNewUser(token: string, issuer: string) {
   return response?.data?.users?.length === 0;
 }
 
-export async function createNewUser(
-  token: string,
-  metadata: { issuer: string; email: string; publicAddress: string }
-) {
+export async function createNewUser(token: string, metadata: MetadataProps) {
   const operationsDoc = `
   mutation createNewUser($issuer: String!, $email: String, $publicAddress: String!) {
     insert_users(objects: {issuer: $issuer, email: $email, publicAddress: $publicAddress}) {
