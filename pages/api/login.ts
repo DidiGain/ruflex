@@ -26,6 +26,14 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
         process.env.JWT_SECRET as string
       );
 
+      const isNewUserQuery = await isNewUser(
+        token,
+        userMetadata.issuer as string
+      );
+
+      isNewUserQuery &&
+        (await createNewUser(token, { issuer, email, publicAddress }));
+
       res.send({ message: "success" });
     } catch (error) {
       console.error("Something went wrong logging in", error);
