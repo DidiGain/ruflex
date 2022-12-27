@@ -57,12 +57,10 @@ export async function createNewUser(token: string, metadata: MetadataProps) {
   }
 `;
 
-  const { issuer, email, publicAddress } = metadata;
-
   const response = await fetchHasuraGraphQL(
     operationsDoc,
     "createNewUser",
-    { issuer, email, publicAddress },
+    metadata,
     token
   );
 
