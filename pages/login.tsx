@@ -114,6 +114,7 @@ const Login = () => {
             className={styles.emailInput}
             onChange={handleOnChangeEmail}
             tabIndex={0}
+            value={email}
           />
           <p className={styles.userMsg}>{userMsg}</p>
           <button
