@@ -20,9 +20,8 @@ export default function App({ Component, pageProps }: AppProps) {
     handleLoggedIn();
   }, []);
 
-  const handleComplete = () => setIsLoading(false);
-
   useEffect(() => {
+    const handleComplete = () => setIsLoading(false);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
 
