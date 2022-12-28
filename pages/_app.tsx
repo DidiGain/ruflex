@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -17,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
       else router.push("/login");
     };
     handleLoggedIn();
-  }, [router]);
+  }, []);
 
   const handleComplete = () => setIsLoading(false);
 
