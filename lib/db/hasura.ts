@@ -46,7 +46,7 @@ export async function isNewUser(token: string, issuer: string) {
 
 export async function createNewUser(token: string, metadata: MetadataProps) {
   const operationsDoc = `
-  mutation createNewUser($issuer: String!, $email: String, $publicAddress: String!) {
+  mutation createNewUser($issuer: String!, $email: String!, $publicAddress: String!) {
     insert_users(objects: {issuer: $issuer, email: $email, publicAddress: $publicAddress}) {
       returning {
         email
