@@ -20,7 +20,6 @@ export const Navbar = ({}: NavbarProps) => {
 
         if (user) {
           setUsername(user.email as string);
-          console.log(username);
         }
       } catch (error) {
         console.error("Error retrieving email", error);
@@ -47,7 +46,6 @@ export const Navbar = ({}: NavbarProps) => {
 
   const handleSignout = async (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("signOut");
     try {
       await magic?.user.logout();
       router.push("/login");
