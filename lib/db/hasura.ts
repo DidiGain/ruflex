@@ -3,7 +3,7 @@ import { MetadataProps } from "../../types";
 async function fetchHasuraGraphQL(
   operationsDoc: string,
   operationName: string,
-  variables: Record<string, any>,
+  variables: {},
   token: string
 ) {
   const result = await fetch(
@@ -13,6 +13,8 @@ async function fetchHasuraGraphQL(
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        "x-hasura-admin-secret": process.env
+          .NEXT_PUBLIC_HASURA_ADMIN_KEY as string,
       },
       body: JSON.stringify({
         query: operationsDoc,
@@ -25,23 +27,41 @@ async function fetchHasuraGraphQL(
   return await result.json();
 }
 
+export function fetchUsers(token: string) {
+  const operationsDoc = `
+    query GetUsers {
+      users {
+        id
+        email
+        issuer
+        publicAddress
+      }
+    }
+  `;
+  return fetchHasuraGraphQL(operationsDoc, "GetUsers", {}, token);
+}
+
 export async function isNewUser(token: string, issuer: string) {
   const operationsDoc = `
   query isNewUser($issuer: String!) {
-    users(where: { issuer: { _eg: $issuer }}) {
-      id, email, issuer
+    users(where: {issuer: {_eq: $issuer}}) {
+      id
+      email
+      issuer
     }
   }
-  `;
+`;
 
   const response = await fetchHasuraGraphQL(
     operationsDoc,
     "isNewUser",
-    { issuer },
+    {
+      issuer,
+    },
     token
   );
 
-  return response?.data?.users?.length === 0;
+  return !response?.data?.users[0];
 }
 
 export async function createNewUser(token: string, metadata: MetadataProps) {
