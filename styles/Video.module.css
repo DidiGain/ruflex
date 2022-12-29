@@ -52,7 +52,7 @@
 
 .col1 {
   max-height: 50vh;
-  overflow-y: hidden;
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 
@@ -74,15 +74,12 @@
 .col2 {
   color: var(--white20);
   line-height: 1.75rem;
-  display: flex;
-  flex-direction: column;
 }
 
 .subText {
   font-size: 0.875rem;
-  line-height: 1.25rem;
+  line-height: 1.25;
   margin-left: 0px;
-  overflow-wrap: break-word;
 }
 
 .subTextWrapper {
@@ -99,7 +96,7 @@
 }
 
 @media (min-width: 1024px) {
-  .modal {
+  .videoModal {
     top: 10%;
     bottom: 40px;
     width: 50%;
