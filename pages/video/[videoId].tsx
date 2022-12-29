@@ -8,6 +8,9 @@ import { ParsedUrlQuery } from "querystring";
 import { fetchVideoById } from "../../lib/videos";
 import { formatBigNumber, formatDate } from "../../helpers/format";
 import { Video } from "../../components/SectionCards/SectionCards.props";
+import LikeIcon from "../../components/VideoRate/like-icon";
+import DislikeIcon from "../../components/VideoRate/dislike-icon";
+import { useState } from "react";
 
 Modal.setAppElement("#__next");
 
@@ -37,6 +40,8 @@ export const getStaticPaths = async () => {
 };
 
 const Video = ({ video }: VideoObj) => {
+  const [likeBtnClicked, setLikeBtnClicked] = useState(false);
+  const [dislikeBtnClicked, setDislikeBtnClicked] = useState(false);
   const router = useRouter();
   const videoId = router.query.videoId;
 
@@ -47,6 +52,16 @@ const Video = ({ video }: VideoObj) => {
     channelTitle,
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
+
+  const handleToggleLike = () => {
+    setLikeBtnClicked((prev) => !prev);
+    setDislikeBtnClicked(likeBtnClicked);
+  };
+
+  const handleToggleDislike = () => {
+    setDislikeBtnClicked((prev) => !prev);
+    setLikeBtnClicked(dislikeBtnClicked);
+  };
 
   return (
     <>
@@ -68,12 +83,12 @@ const Video = ({ video }: VideoObj) => {
 
         <div className={styles.likeDislikeBtnWrapper}>
           <div className={styles.likeBtnWrapper}>
-            <button>
-              <div className={styles.btnWrapper}></div>
+            <button className={styles.btnWrapper} onClick={handleToggleLike}>
+              <LikeIcon selected={likeBtnClicked} />
             </button>
           </div>
-          <button>
-            <div className={styles.btnWrapper}></div>
+          <button className={styles.btnWrapper} onClick={handleToggleDislike}>
+            <DislikeIcon selected={dislikeBtnClicked} />
           </button>
         </div>
 
