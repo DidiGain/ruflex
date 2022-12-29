@@ -66,19 +66,6 @@ const Login = () => {
       } catch (error) {
         setIsLoading(false);
         console.log(`Error while singing in: ${error}`);
-        if (error instanceof RPCError) {
-          switch (error.code) {
-            case RPCErrorCode.MagicLinkFailedVerification:
-              console.log(error.code, SDKError);
-            case RPCErrorCode.MagicLinkExpired:
-              console.log(error.code, SDKError);
-            case RPCErrorCode.MagicLinkRateLimited:
-              console.log(error.code, SDKError);
-            case RPCErrorCode.UserAlreadyLoggedIn:
-              console.log(error.code, SDKError);
-              break;
-          }
-        }
       }
     } else {
       setIsLoading(false);
