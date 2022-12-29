@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { magicAdmin } from "../../lib/magic-server";
 import jwt from "jsonwebtoken";
-import { createNewUser, isNewUser } from "../../lib/db/hasura";
-import { MetadataProps } from "../../types";
+import { createNewUser, fetchUsers, isNewUser } from "../../lib/db/hasura";
 import { setTokenCookie } from "../../lib/cookies";
+import { MetadataProps } from "../../types";
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -12,7 +12,9 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       const did = auth ? auth.substring(7) : "";
       const userMetadata = await magicAdmin.users.getMetadataByToken(did);
 
-      const { issuer, email, publicAddress } = userMetadata;
+      const { issuer, email, publicAddress }: MetadataProps = userMetadata;
+
+      console.log(issuer, email);
 
       const token = jwt.sign(
         {
@@ -22,21 +24,25 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
           "https://hasura.io/jwt/claims": {
             "x-hasura-allowed-roles": ["user", "admin"],
             "x-hasura-default-role": "user",
-            "x-hasura-user-id": `${userMetadata.issuer}`,
+            "x-hasura-user-id": `${issuer}`,
           },
         },
         process.env.JWT_SECRET as string
       );
 
-      const isNewUserQuery = await isNewUser(
-        token,
-        userMetadata.issuer as string
-      );
+      const { errors, data } = await fetchUsers(token);
+      if (errors) {
+        console.error(errors);
+      } else {
+        console.log(data);
+      }
+
+      const isNewUserQuery = await isNewUser(token, issuer as string);
 
       isNewUserQuery &&
         (await createNewUser(token, { issuer, email, publicAddress }));
       setTokenCookie(token, res);
-      res.send({ message: "success" });
+      res.send({ done: true });
     } catch (error) {
       console.error("Something went wrong logging in", error);
       res.status(500).send({ done: false });
