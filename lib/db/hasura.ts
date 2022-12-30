@@ -1,4 +1,4 @@
-import { MetadataProps } from "../../types";
+import { MetadataProps, StatProps } from "../../types";
 
 async function fetchHasuraGraphQL(
   operationsDoc: string,
@@ -87,7 +87,7 @@ export async function createNewUser(token: string, metadata: MetadataProps) {
   return response;
 }
 
-export async function findVideoIdByUser(
+export async function findIfStatExistByUser(
   token: string,
   userId: string,
   videoId: string
@@ -113,5 +113,43 @@ export async function findVideoIdByUser(
     token
   );
 
-  return response?.data?.stats;
+  return response?.data?.stats[0];
+}
+
+export async function insertStats(token: string, stats: StatProps) {
+  const operationsDoc = `
+    mutation insertStats($userId: String!, $videoId: String! $favourited: Int!, $watched: Boolean!) {
+      insert_stats_one(object: {
+        userId: $userId, 
+        videoId: $videoId
+        favourited: $favourited,                             
+        watched: $watched, 
+      }) {
+        userId
+        favourited
+      }
+    }`;
+
+  return await fetchHasuraGraphQL(operationsDoc, "insertStats", stats, token);
+}
+
+export async function updateStats(token: string, stats: StatProps) {
+  const operationsDoc = `
+    mutation updateStats($userId: String!, $videoId: String! $favourited: Int!, $watched: Boolean!) {
+      update_stats(
+        _set: {favourited: $favourited, watched: $watched}, 
+        where: {
+          userId: {_eq: $userId}, 
+          videoId: {_eq: $videoId}
+        }) {
+        returning {
+          userId,
+          videoId
+          favourited,
+          watched,
+        }
+      }
+    }`;
+
+  return await fetchHasuraGraphQL(operationsDoc, "updateStats", stats, token);
 }
