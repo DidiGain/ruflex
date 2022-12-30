@@ -3,3 +3,10 @@ export type MetadataProps = {
   email?: string | null;
   publicAddress?: string | null;
 };
+
+export type StatProps = {
+  userId: string;
+  videoId: string;
+  favourited: string;
+  watched: boolean;
+};
