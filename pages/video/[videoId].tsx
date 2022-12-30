@@ -10,7 +10,7 @@ import { formatBigNumber, formatDate } from "../../helpers/format";
 import { Video } from "../../components/SectionCards/SectionCards.props";
 import LikeIcon from "../../components/VideoRate/like-icon";
 import DislikeIcon from "../../components/VideoRate/dislike-icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 Modal.setAppElement("#__next");
 
@@ -53,14 +53,47 @@ const Video = ({ video }: VideoObj) => {
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
-  const handleToggleLike = () => {
-    setLikeBtnClicked((prev) => !prev);
-    setDislikeBtnClicked(likeBtnClicked);
+  useEffect(() => {
+    const getLikeDislikeState = async () => {
+      const response = await fetch(`/api/state?videoId=${videoId}`, {
+        method: "GET",
+      });
+
+      const data = await response.json();
+      if (data.length > 0) {
+        const favourited = data[0].favourited;
+        if (favourited === 1) setLikeBtnClicked(true);
+        else if (favourited === 0) setDislikeBtnClicked(true);
+      }
+    };
+
+    getLikeDislikeState();
+  }, [videoId]);
+
+  const runRatingService = async (favourited: number) => {
+    return await fetch("/api/stats", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ videoId, favourited }),
+    });
   };
 
-  const handleToggleDislike = () => {
-    setDislikeBtnClicked((prev) => !prev);
+  const handleToggleLike = async () => {
+    const val = !likeBtnClicked;
+    setLikeBtnClicked(val);
+    setDislikeBtnClicked(likeBtnClicked);
+
+    const favourited = val ? 1 : 0;
+    await runRatingService(favourited);
+  };
+
+  const handleToggleDislike = async () => {
+    const val = !dislikeBtnClicked;
+    setDislikeBtnClicked(!val);
     setLikeBtnClicked(dislikeBtnClicked);
+
+    const favourited = val ? 0 : 1;
+    await runRatingService(favourited);
   };
 
   return (
