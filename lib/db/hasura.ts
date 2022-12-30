@@ -87,7 +87,7 @@ export async function createNewUser(token: string, metadata: MetadataProps) {
   return response;
 }
 
-export async function findIfStatExistByUser(
+export async function findVideoStatByUser(
   token: string,
   userId: string,
   videoId: string
