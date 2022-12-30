@@ -86,3 +86,32 @@ export async function createNewUser(token: string, metadata: MetadataProps) {
 
   return response;
 }
+
+export async function findVideoIdByUser(
+  token: string,
+  userId: string,
+  videoId: string
+) {
+  const operationsDoc = `
+  query findVideoIdByUserId($userId: String!, $videoId: String!) {
+    stats(where: {userId: {_eg: $userId}, videoId: {_eg: $videoId}}) {
+      id
+      userId
+      videoId
+      favourited
+      watched
+    }
+  }`;
+
+  const response = await fetchHasuraGraphQL(
+    operationsDoc,
+    "findVideoIdByUserId",
+    {
+      userId,
+      videoId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
