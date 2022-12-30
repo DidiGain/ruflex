@@ -7,6 +7,6 @@ export type MetadataProps = {
 export type StatProps = {
   userId: string;
   videoId: string;
-  favourited: string;
+  favourited: number;
   watched: boolean;
 };
