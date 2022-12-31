@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
 import {
   findVideoStatByUser,
   insertStats,
@@ -8,47 +7,54 @@ import {
 import { verifyToken } from "../../lib/utils";
 
 export default async function stats(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    console.log({ cookies: req.cookies.token });
+  try {
+    const token = req.cookies.token;
+    if (!token) res.status(403).send({ msg: "error, no token provided" });
+    else {
+      const inputParams = req.method === "POST" ? req.body : req.query;
+      const { videoId } = inputParams;
 
-    try {
-      const token = req.cookies.token;
-      if (!token) res.status(403).send({ msg: "error" });
-      else {
+      if (videoId) {
         const userId = await verifyToken(token);
-        const videoId = req.query.videoId as string;
-        const { favourited, watched = true } = req.body;
-
         const findStat = await findVideoStatByUser(token, userId, videoId);
+
         const isStatExist = findStat?.length > 0;
 
-        console.log(`is stat: ${isStatExist}`);
+        if (req.method === "POST") {
+          const { favourited, watched = true } = req.body;
 
-        if (isStatExist) {
-          //update
-          const response = await updateStats(token, {
-            userId,
-            videoId,
-            favourited,
-            watched,
-          });
-          res.send({ data: response });
-        } else {
-          //insert
-          const response = await insertStats(token, {
-            userId,
-            videoId,
-            favourited,
-            watched,
-          });
-          res.send({ data: response });
+          if (isStatExist) {
+            //update
+            const response = await updateStats(token, {
+              userId,
+              videoId,
+              favourited,
+              watched,
+            });
+
+            res.send({ data: response });
+          } else {
+            //insert
+            const response = await insertStats(token, {
+              userId,
+              videoId,
+              favourited,
+              watched,
+            });
+
+            res.send({ data: response });
+          }
+        } else if (req.method === "GET") {
+          if (isStatExist) res.send(findStat);
+          else {
+            res.status(404);
+            res.send({ user: null, msg: "Video not found" });
+          }
         }
-
-        res.send({ msg: "stats posted" });
       }
-    } catch (error) {
-      console.error("Error in /stats", error);
-      res.status(500).send({ done: false, error });
     }
+  } catch (error) {
+    console.error("Error in /stats", error);
+    res.status(500).send({ done: false, error });
   }
 }
