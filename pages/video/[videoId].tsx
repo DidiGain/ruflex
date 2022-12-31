@@ -55,11 +55,12 @@ const Video = ({ video }: VideoObj) => {
 
   useEffect(() => {
     const getLikeDislikeState = async () => {
-      const response = await fetch(`/api/state?videoId=${videoId}`, {
+      const response = await fetch(`/api/stats?videoId=${videoId}`, {
         method: "GET",
       });
 
       const data = await response.json();
+
       if (data.length > 0) {
         const favourited = data[0].favourited;
         if (favourited === 1) setLikeBtnClicked(true);
@@ -81,7 +82,7 @@ const Video = ({ video }: VideoObj) => {
   const handleToggleLike = async () => {
     const val = !likeBtnClicked;
     setLikeBtnClicked(val);
-    setDislikeBtnClicked(likeBtnClicked);
+    setDislikeBtnClicked(!val);
 
     const favourited = val ? 1 : 0;
     await runRatingService(favourited);
@@ -89,8 +90,8 @@ const Video = ({ video }: VideoObj) => {
 
   const handleToggleDislike = async () => {
     const val = !dislikeBtnClicked;
-    setDislikeBtnClicked(!val);
-    setLikeBtnClicked(dislikeBtnClicked);
+    setDislikeBtnClicked(val);
+    setLikeBtnClicked(!val);
 
     const favourited = val ? 0 : 1;
     await runRatingService(favourited);
