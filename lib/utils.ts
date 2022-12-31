@@ -3,15 +3,15 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 export async function verifyToken(token: string) {
   try {
     if (token) {
-      const verifiedToken = (await jwt.verify(
+      const verifiedToken = jwt.verify(
         token,
         process.env.JWT_SECRET as string
-      )) as JwtPayload;
+      ) as JwtPayload;
 
-      return verifiedToken.payload && verifiedToken.payload?.issuer;
+      return verifiedToken && verifiedToken.issuer;
     }
   } catch (error) {
-    console.error(error);
+    console.error({ error });
     return null;
   }
 }
