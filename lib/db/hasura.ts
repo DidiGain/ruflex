@@ -93,15 +93,14 @@ export async function findVideoStatByUser(
   videoId: string
 ) {
   const operationsDoc = `
-  query findVideoIdByUserId($userId: String!, $videoId: String!) {
-    stats(where: {userId: {_eg: $userId}, videoId: {_eg: $videoId}}) {
-      id
-      userId
-      videoId
-      favourited
-      watched
-    }
-  }`;
+    query findVideoIdByUserId($userId: String!, $videoId: String!) {
+      stats(where: { userId: {_eq: $userId}, videoId: {_eq: $videoId }}) {
+        userId
+        videoId
+        favourited
+        watched
+      }
+    }`;
 
   const response = await fetchHasuraGraphQL(
     operationsDoc,
@@ -113,7 +112,7 @@ export async function findVideoStatByUser(
     token
   );
 
-  return response?.data?.stats[0];
+  return response?.data?.stats;
 }
 
 export async function insertStats(token: string, stats: StatProps) {
