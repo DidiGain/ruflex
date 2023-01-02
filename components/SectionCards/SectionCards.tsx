@@ -19,6 +19,7 @@ export const SectionCards = ({
           <Link href={`/video/${video.id}`} key={video.id}>
             <Card
               id={idx}
+              key={video.id}
               imgUrl={video.imgUrl}
               size={size}
               shouldScale={shouldScale}
