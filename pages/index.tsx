@@ -7,8 +7,11 @@ import {
   fetchCommonVideos,
   fetchPopularVideos,
   fetchVideosBySearchQuery,
+  fetchWatchedVideos,
 } from "../lib/videos";
 import { Video } from "../components/SectionCards/SectionCards.props";
+import { getUserData } from "../utils/getUserData";
+import { GetServerSidePropsContext } from "next";
 
 interface HomeProps {
   disneyVideos: Video[];
@@ -18,9 +21,21 @@ interface HomeProps {
   popularVideos: Video[];
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { token, userId } = await getUserData(context);
+
+  if (!userId) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   const disneyVideos = await fetchVideosBySearchQuery("disney trailer");
-  const watchItAgainVideos = await fetchVideosBySearchQuery("disney trailer");
+  const watchItAgainVideos = await fetchWatchedVideos(token as string, userId);
   const travelVideos = await fetchVideosBySearchQuery("travel");
   const productivityVideos = await fetchVideosBySearchQuery("productivity");
   const popularVideos = await fetchPopularVideos();
