@@ -10,3 +10,8 @@ export type StatProps = {
   favourited: number;
   watched: boolean;
 };
+
+export type Video = {
+  videoId: string;
+  imgUrl: string;
+};
