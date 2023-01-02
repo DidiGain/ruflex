@@ -1,4 +1,5 @@
 import videoTestData from "../data/videos.json";
+import { getWatchedVideos } from "./db/hasura";
 
 const YT_API_KEY = process.env.YT_API_KEY;
 const BASE_URL = "youtube.googleapis.com/youtube/v3";
@@ -53,4 +54,15 @@ export const fetchPopularVideos = () => {
 export const fetchVideoById = (videoId: string) => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
   return fetchCommonVideos(URL);
+};
+
+export const fetchWatchedVideos = async (token: string, userId: string) => {
+  const videos = await getWatchedVideos(token, userId);
+  return videos?.map(
+    (video: Record<string, any>) =>
+      ({
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      } || [])
+  );
 };
