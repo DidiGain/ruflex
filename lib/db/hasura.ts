@@ -152,3 +152,20 @@ export async function updateStats(token: string, stats: StatProps) {
 
   return await fetchHasuraGraphQL(operationsDoc, "updateStats", stats, token);
 }
+
+export async function getWatchedVideos(token: string, userId: string) {
+  const operationsDoc = `query getWatchedVideos($userId: String!) {
+    stats(where: { userId: { _eq: $userId }, watched: { _eq: true } }) {
+      videoId
+    }
+  }`;
+
+  const response = await fetchHasuraGraphQL(
+    operationsDoc,
+    "getWatchedVideos",
+    { userId },
+    token
+  );
+
+  return response?.data?.stats;
+}
