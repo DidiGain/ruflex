@@ -21,10 +21,11 @@ export const Card = ({ id, imgUrl, size, shouldScale = true }: CardProps) => {
   };
 
   const scale = id === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
+  const shouldHover = shouldScale && { whileHover: { ...scale } };
 
   return (
     <div className={styles.cardContainer}>
-      <motion.div className={classMap[size]} whileHover={{ ...scale }}>
+      <motion.div className={classMap[size]} {...shouldHover}>
         <Image
           src={imageSrc}
           alt="card image"
