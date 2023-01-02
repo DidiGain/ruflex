@@ -98,7 +98,7 @@
 
 .likeDislikeBtnWrapper {
   position: absolute;
-  top: 50%;
+  top: 35%;
   right: 10px;
   display: flex;
   gap: 20px;
