@@ -2,10 +2,15 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../styles/Login.module.css";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+  KeyboardEvent,
+} from "react";
 import { useRouter } from "next/router";
 import { magic } from "../lib/magic-client";
-import { RPCError, RPCErrorCode, SDKError } from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,9 +18,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleComplete = () => setIsLoading(false);
-
   useEffect(() => {
+    const handleComplete = () => setIsLoading(false);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
 
@@ -31,7 +35,7 @@ const Login = () => {
     setEmail(e.target.value);
   };
 
-  const handleLoginWithEmail = async (e: React.MouseEvent) => {
+  const handleLoginWithEmail = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     if (email) {
@@ -73,6 +77,13 @@ const Login = () => {
     }
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const k = e.key;
+    if (k === "Enter") {
+      handleLoginWithEmail(e);
+    }
+  };
+
   return (
     <div className={styles.loginContainer}>
       <Head>
@@ -102,6 +113,7 @@ const Login = () => {
             onChange={handleOnChangeEmail}
             tabIndex={0}
             value={email}
+            onKeyDown={handleKeyDown}
           />
           <p className={styles.userMsg}>{userMsg}</p>
           <button
