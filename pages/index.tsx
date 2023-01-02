@@ -10,7 +10,7 @@ import {
   fetchWatchedVideos,
 } from "../lib/videos";
 import { Video } from "../components/SectionCards/SectionCards.props";
-import { getUserData } from "../utils/getUserData";
+import { getUserIdAndToken } from "../utils/getUserData";
 import { GetServerSidePropsContext } from "next";
 
 interface HomeProps {
@@ -22,7 +22,7 @@ interface HomeProps {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { token, userId } = await getUserData(context);
+  const { token, userId } = await getUserIdAndToken(context);
 
   if (!userId) {
     return {
