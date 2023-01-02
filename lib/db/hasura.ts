@@ -169,3 +169,18 @@ export async function getWatchedVideos(token: string, userId: string) {
 
   return response?.data?.stats;
 }
+
+export async function getMyList(token: string, userId: string) {
+  const operationsDoc = `query getFavouritedVideos($userId: String!) {
+    stats(where: { userId: {_eq: $userId}, favourited: {_eq: 1}}) { videoId }
+  }`;
+
+  const response = await fetchHasuraGraphQL(
+    operationsDoc,
+    "getFavouritedVideos",
+    { userId },
+    token
+  );
+
+  return response?.data?.stats;
+}

@@ -1,5 +1,6 @@
 import videoTestData from "../data/videos.json";
-import { getWatchedVideos } from "./db/hasura";
+import { Video } from "../types";
+import { getMyList, getWatchedVideos } from "./db/hasura";
 
 const YT_API_KEY = process.env.YT_API_KEY;
 const BASE_URL = "youtube.googleapis.com/youtube/v3";
@@ -59,7 +60,18 @@ export const fetchVideoById = (videoId: string) => {
 export const fetchWatchedVideos = async (token: string, userId: string) => {
   const videos = await getWatchedVideos(token, userId);
   return videos?.map(
-    (video: Record<string, any>) =>
+    (video: Video) =>
+      ({
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      } || [])
+  );
+};
+
+export const fetchMyList = async (token: string, userId: string) => {
+  const videos = await getMyList(token, userId);
+  return videos?.map(
+    (video: Video) =>
       ({
         id: video.videoId,
         imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
