@@ -82,11 +82,11 @@ export const Navbar = ({}: NavbarProps) => {
         <ul className={styles.navItems}>
           <li className={styles.navItem} onClick={handleOnClickHome}>
             <MdHome />
-            <p>Home</p>
+            <p className={styles.navItem__title}>Home</p>
           </li>
           <li className={styles.navItem} onClick={handleOnClickMyList}>
             <MdOutlineFavorite />
-            <p>My List</p>
+            <p className={styles.navItem__title}>My List</p>
           </li>
         </ul>
         <div className={styles.userWrapper}>

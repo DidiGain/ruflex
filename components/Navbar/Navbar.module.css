@@ -26,16 +26,17 @@
 
 .logoTitle {
   font-size: 3rem;
-  line-height: 1.5rem;
+  line-height: 1.5;
   color: var(--red-primary);
 }
 
 .rightContent {
+  position: relative;
   flex-grow: 1;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  margin: 0 40px;
+  margin: 0 0 0 40px;
   font-size: 1.5rem;
 }
 
@@ -95,7 +96,7 @@
 .linkName {
   display: block;
   font-size: 1rem;
-  line-height: 1.25rem;
+  line-height: 1.25;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition-property: background-color, border-color, color, fill, stroke;
@@ -105,4 +106,47 @@
 
 .linkName:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 812px) {
+  .navItems {
+    gap: 10px;
+  }
+
+  .navItem__title {
+    display: none;
+  }
+
+  .logoTitle {
+    font-size: 1.6rem;
+  }
+
+  .logoIcon {
+    width: 30px;
+  }
+
+  .userBtn {
+    font-size: 1rem;
+  }
+
+  .rightContent {
+    margin: 0 10px;
+  }
+
+  .navDropdown {
+    width: 100px;
+  }
+}
+
+@media (max-width: 580px) {
+  .navContainer,
+  .rightContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rightContent {
+    gap: 10px;
+  }
 }
