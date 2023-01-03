@@ -42,7 +42,7 @@ export const Navbar = ({}: NavbarProps) => {
     router.push("/my-list");
   };
 
-  const handleShowDropDown = (e: React.MouseEvent) => {
+  const handleShowDropDown = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setShowDropDown((prev) => !prev);
   };
@@ -90,7 +90,11 @@ export const Navbar = ({}: NavbarProps) => {
           </li>
         </ul>
         <div className={styles.userWrapper}>
-          <button className={styles.userBtn} onClick={handleShowDropDown}>
+          <button
+            className={styles.userBtn}
+            onClick={handleShowDropDown}
+            onBlur={handleShowDropDown}
+          >
             <p>{username}</p>
             <SlArrowDown className={styles.arrowDown} />
           </button>
