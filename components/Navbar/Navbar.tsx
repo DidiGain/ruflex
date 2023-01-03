@@ -57,7 +57,7 @@ export const Navbar = ({}: NavbarProps) => {
           "Content-Type": "application/json",
         },
       });
-      return await response.json();
+      const resp = await response.json();
     } catch (error) {
       console.error("Something went wrong signing out", error);
       router.push("/login");
