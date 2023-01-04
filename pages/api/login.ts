@@ -14,8 +14,6 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
 
       const { issuer, email, publicAddress }: MetadataProps = userMetadata;
 
-      console.log(issuer, email);
-
       const token = jwt.sign(
         {
           ...userMetadata,
@@ -30,12 +28,12 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
         process.env.JWT_SECRET as string
       );
 
-      const { errors, data } = await fetchUsers(token);
-      if (errors) {
-        console.error(errors);
-      } else {
-        console.log(data);
-      }
+      // const { errors, data } = await fetchUsers(token);
+      // if (errors) {
+      //   console.error(errors);
+      // } else {
+      //   console.log(data);
+      // }
 
       const isNewUserQuery = await isNewUser(token, issuer as string);
 
