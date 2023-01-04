@@ -3,12 +3,11 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
-import { NavbarProps } from "./Navbar.props";
 import { MdHome, MdOutlineFavorite } from "react-icons/md";
 import { SlArrowDown } from "react-icons/sl";
 import { magic } from "../../lib/magic-client";
 
-export const Navbar = ({}: NavbarProps) => {
+export const Navbar = () => {
   const [username, setUsername] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
   const [didToken, setDidToken] = useState("");
@@ -44,20 +43,20 @@ export const Navbar = ({}: NavbarProps) => {
 
   const handleShowDropDown = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setShowDropDown((prev) => !prev);
   };
 
   const handleSignout = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/logout", {
+      await fetch("/api/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${didToken}`,
           "Content-Type": "application/json",
         },
       });
-      const resp = await response.json();
     } catch (error) {
       console.error("Something went wrong signing out", error);
       router.push("/login");
@@ -90,19 +89,13 @@ export const Navbar = ({}: NavbarProps) => {
           </li>
         </ul>
         <div className={styles.userWrapper}>
-          <button
-            className={styles.userBtn}
-            onClick={handleShowDropDown}
-            onBlur={handleShowDropDown}
-          >
+          <button className={styles.userBtn} onClick={handleShowDropDown}>
             <p>{username}</p>
             <SlArrowDown className={styles.arrowDown} />
           </button>
           {showDropDown && (
-            <div className={styles.navDropdown}>
-              <a className={styles.linkName} onClick={handleSignout}>
-                Sign out
-              </a>
+            <div className={styles.navDropdown} onClick={handleSignout}>
+              <a className={styles.linkName}>Sign out</a>
             </div>
           )}
         </div>
