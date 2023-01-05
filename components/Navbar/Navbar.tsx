@@ -43,12 +43,12 @@ export const Navbar = () => {
 
   const handleShowDropDown = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     setShowDropDown((prev) => !prev);
   };
 
   const handleSignout = async (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     try {
       await fetch("/api/logout", {
         method: "POST",
