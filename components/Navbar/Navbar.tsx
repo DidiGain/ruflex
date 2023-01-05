@@ -59,8 +59,8 @@ export const Navbar = () => {
       });
     } catch (error) {
       console.error("Something went wrong signing out", error);
-      router.push("/login");
     }
+    router.push("/login");
   };
 
   return (
@@ -94,9 +94,15 @@ export const Navbar = () => {
             <SlArrowDown className={styles.arrowDown} />
           </button>
           {showDropDown && (
-            <div className={styles.navDropdown} onClick={handleSignout}>
-              <a className={styles.linkName}>Sign out</a>
-            </div>
+            <>
+              <div
+                className={styles.navDropdown__overlay}
+                onClick={handleShowDropDown}
+              ></div>
+              <div className={styles.navDropdown} onClick={handleSignout}>
+                <a className={styles.linkName}>Sign out</a>
+              </div>
+            </>
           )}
         </div>
       </div>
