@@ -10,4 +10,4 @@
 - Magic link
 
 ## Demo version:
-https://puffix.vercel.app/
+### [Puffix](https://puffix.vercel.app/)
